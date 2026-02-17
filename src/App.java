@@ -1,3 +1,12 @@
+import factory.CompteFactory;
+import model.Compte;
+import observer.NotificationEmail;
+import observer.NotificationSMS;
+import strategy.FraisStandard;
+import strategy.IStrategieFrais;
+import enums.TypeCompte;
+
+
 public class App {
     public static void main(String[] args) {
 

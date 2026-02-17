@@ -18,22 +18,27 @@ Ainsi que les Design Patterns essentiels :
 ## 📦 Structure du projet
 ```
 src/
-├── Compte.java              # Classe abstraite - modèle de base
-├── CompteCourant.java       # Hérite de Compte (avec découvert autorisé)
-├── CompteEpargne.java       # Hérite de Compte (avec taux d'intérêt)
-├── Client.java              # Gestion des clients
-├── Transaction.java         # Historique des opérations
-├── TypeTransaction.java     # Enum - types de transactions
-├── TypeCompte.java          # Enum - types de comptes
-├── Observer.java            # Interface - pattern Observer
-├── NotificationEmail.java   # Observer - notification email
-├── NotificationSMS.java     # Observer - notification SMS
-├── IStrategieFrais.java     # Interface - pattern Strategy
-├── FraisStandard.java       # Strategy - frais standard (2€)
-├── FraisEtudiant.java       # Strategy - frais étudiant (0.50€)
-├── FraisPremium.java        # Strategy - frais premium (gratuit)
-├── CompteFactory.java       # Pattern Factory - création des comptes
-└── App.java                 # Point d'entrée
+├── App.java
+├── model/
+│   ├── Compte.java              # Classe abstraite - modèle de base
+│   ├── CompteCourant.java       # Hérite de Compte (avec découvert autorisé)
+│   ├── CompteEpargne.java       # Hérite de Compte (avec taux d'intérêt)
+│   ├── Client.java              # Gestion des clients
+│   └── Transaction.java         # Historique des opérations
+├── factory/
+│   └── CompteFactory.java       # Pattern Factory - création des comptes
+├── strategy/
+│   ├── IStrategieFrais.java     # Interface - pattern Strategy
+│   ├── FraisStandard.java       # Frais standard (2€)
+│   ├── FraisEtudiant.java       # Frais étudiant (0.50€)
+│   └── FraisPremium.java        # Frais premium (gratuit)
+├── observer/
+│   ├── Observer.java            # Interface - pattern Observer
+│   ├── NotificationEmail.java   # Observer - notification email
+│   └── NotificationSMS.java     # Observer - notification SMS
+└── enums/
+    ├── TypeCompte.java          # Enum - types de comptes
+    └── TypeTransaction.java     # Enum - types de transactions
 ```
 
 ## 🎓 Concepts POO utilisés
@@ -118,8 +123,8 @@ java -cp bin App
 
 - [x] POO Pure (Encapsulation, Héritage, Polymorphisme)
 - [x] Design Patterns (Factory, Strategy, Observer)
+- [x] Organisation en packages
 - [ ] Gestion des exceptions
-- [ ] Organisation en packages
 - [ ] Spring Boot
 
 ## 👨‍💻 Contexte
@@ -127,5 +132,3 @@ java -cp bin App
 Projet réalisé dans le cadre d'une remise à niveau Java après une période
 de développement principalement orientée React/Next.js.
 ```
-
----
