@@ -1,4 +1,4 @@
-public class NotificationSMS implements Notifiable {
+public class NotificationSMS implements Observer {
     private String numeroTelephone;
     
     public NotificationSMS(String numeroTelephone) {
@@ -6,7 +6,7 @@ public class NotificationSMS implements Notifiable {
     }
     
     @Override
-    public void envoyerNotification(String message) {
+    public void update(String message) {
         System.out.println("Envoi d'un SMS à " + numeroTelephone + ": " + message);
     }
     

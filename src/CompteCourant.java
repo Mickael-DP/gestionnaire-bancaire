@@ -2,8 +2,8 @@ public class CompteCourant extends Compte {
     
     private double decouvertAutorise;
     
-    public CompteCourant(String numeroCompte, double decouvertAutorise, Notifiable notifiable) {
-        super(numeroCompte, notifiable);  
+    public CompteCourant(String numeroCompte, double decouvertAutorise, IStrategieFrais strategieFrais) {
+        super(numeroCompte, strategieFrais);  
         this.decouvertAutorise = decouvertAutorise;
     }
     

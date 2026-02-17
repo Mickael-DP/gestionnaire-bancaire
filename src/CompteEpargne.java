@@ -2,8 +2,8 @@ public  class CompteEpargne extends Compte {
     
     private double tauxInteret;
     
-    public CompteEpargne(String numeroCompte, double tauxInteret, Notifiable notifiable) {
-        super(numeroCompte, notifiable);  
+    public CompteEpargne(String numeroCompte, double tauxInteret, IStrategieFrais strategieFrais) {
+        super(numeroCompte, strategieFrais);  
         this.tauxInteret = tauxInteret;
     }
     

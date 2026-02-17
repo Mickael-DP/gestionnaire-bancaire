@@ -1,4 +1,4 @@
-public class NotificationEmail implements Notifiable {
+public class NotificationEmail implements Observer {
 
     private String email;
 
@@ -7,8 +7,7 @@ public class NotificationEmail implements Notifiable {
     }
 
     @Override
-    public void envoyerNotification(String message) {
-        System.out.println("Envoi de l'email à " + email + " : " + message);
+    public void update(String message) {
+        System.out.println("Envoi d'un email à " + email + ": " + message);
     }
-    
 }

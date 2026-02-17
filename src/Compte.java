@@ -5,13 +5,15 @@ public abstract class Compte {
     private String numeroCompte;
     private double solde;
     private List<Transaction> historiques;
-    private Notifiable notifiable;
+    private List<Observer> observers;
+    private IStrategieFrais strategieFrais;
 
-    public Compte (String numeroCompte, Notifiable notifiable) {
+    public Compte (String numeroCompte, IStrategieFrais strategieFrais) {
         this.numeroCompte = numeroCompte;
         this.solde = 0.0; 
         this.historiques = new ArrayList<>();
-        this.notifiable = notifiable;
+            this.observers = new ArrayList<>();
+        this.strategieFrais = strategieFrais;
     }
     
     public String getNumeroCompte() {
@@ -26,25 +28,42 @@ public abstract class Compte {
         return historiques;
     }
 
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers(String message) {
+        for (Observer observer : observers) {
+            observer.update(message);
+        }
+    }
+
     public boolean deposer(double montant) {
         if (montant > 0) {
             solde += montant;
             historiques.add(new Transaction(montant, TypeTransaction.DEPOT));
-            notifiable.envoyerNotification("Dépôt de " + montant + " sur le compte " + numeroCompte);
+            notifyObservers("Dépôt de " + montant + " sur le compte " + numeroCompte);
          return true;
         } 
         return false;
     }
 
-    public boolean retirer(double montant) {
-        if (montant > 0 && solde >= montant) {
-            solde -= montant;
-            historiques.add(new Transaction(montant, TypeTransaction.RETRAIT));
-            notifiable.envoyerNotification("Retrait de " + montant + " du compte " + numeroCompte);
-            return true;
-        } 
-        return false;
+   public boolean retirer(double montant) {
+    double frais = strategieFrais.calculerFrais(montant);
+    double montantTotal = montant + frais;
+    
+    if (montant > 0 && solde >= montantTotal) {
+        solde -= montantTotal;
+        historiques.add(new Transaction(montant, TypeTransaction.RETRAIT));
+        notifyObservers("Retrait de " + montant + "€ effectué. Frais : " + frais + "€. Solde : " + solde + "€");
+        return true;
     }
+    return false;
+}
 
 
 }
