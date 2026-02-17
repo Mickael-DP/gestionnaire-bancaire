@@ -10,20 +10,30 @@ Reprendre les bases de Java et mettre en pratique les 3 piliers de la POO :
 - **Héritage**
 - **Polymorphisme**
 
+Ainsi que les Design Patterns essentiels :
+- **Factory**
+- **Strategy**
+- **Observer**
+
 ## 📦 Structure du projet
 ```
 src/
-├── Compte.java           # Classe abstraite - modèle de base
-├── CompteCourant.java    # Hérite de Compte (avec découvert autorisé)
-├── CompteEpargne.java    # Hérite de Compte (avec taux d'intérêt)
-├── Client.java           # Gestion des clients
-├── Transaction.java      # Historique des opérations
-├── TypeTransaction.java  # Enum - types de transactions
-├── TypeCompte.java       # Enum - types de comptes
-├── Notifiable.java       # Interface - système de notifications
-├── NotificationEmail.java # Implémentation notification email
-├── NotificationSMS.java  # Implémentation notification SMS
-└── App.java              # Point d'entrée
+├── Compte.java              # Classe abstraite - modèle de base
+├── CompteCourant.java       # Hérite de Compte (avec découvert autorisé)
+├── CompteEpargne.java       # Hérite de Compte (avec taux d'intérêt)
+├── Client.java              # Gestion des clients
+├── Transaction.java         # Historique des opérations
+├── TypeTransaction.java     # Enum - types de transactions
+├── TypeCompte.java          # Enum - types de comptes
+├── Observer.java            # Interface - pattern Observer
+├── NotificationEmail.java   # Observer - notification email
+├── NotificationSMS.java     # Observer - notification SMS
+├── IStrategieFrais.java     # Interface - pattern Strategy
+├── FraisStandard.java       # Strategy - frais standard (2€)
+├── FraisEtudiant.java       # Strategy - frais étudiant (0.50€)
+├── FraisPremium.java        # Strategy - frais premium (gratuit)
+├── CompteFactory.java       # Pattern Factory - création des comptes
+└── App.java                 # Point d'entrée
 ```
 
 ## 🎓 Concepts POO utilisés
@@ -43,16 +53,34 @@ src/
 ### Polymorphisme
 - Une `List<Compte>` peut contenir des `CompteCourant` ET des `CompteEpargne`
 - La méthode `retirer()` est **redéfinie** (`@Override`) dans `CompteCourant` pour gérer le découvert
-- L'interface `Notifiable` permet de switcher entre Email et SMS sans modifier `Compte`
+- `Observer` et `IStrategieFrais` permettent de changer les comportements sans modifier `Compte`
 
 ### Interfaces
-- `Notifiable` définit le contrat d'envoi de notifications
-- `NotificationEmail` et `NotificationSMS` implémentent ce contrat
-- `Compte` dépend de `Notifiable` et non d'une implémentation spécifique
+- `Observer` définit le contrat de notification
+- `IStrategieFrais` définit le contrat de calcul des frais
+- `Compte` dépend des interfaces, pas des implémentations
 
 ### Enums
 - `TypeTransaction` : DEPOT, RETRAIT, VIREMENT, PAIEMENT_CB
 - `TypeCompte` : COURANT, EPARGNE
+
+## 🏗️ Design Patterns
+
+### Factory
+- `CompteFactory` centralise la création des comptes
+- Un seul endroit à modifier si la création change
+- Valeurs par défaut cohérentes
+
+### Strategy
+- `IStrategieFrais` permet d'appliquer différents frais selon le profil client
+- `FraisStandard` → 2€ par retrait
+- `FraisEtudiant` → 0.50€ par retrait
+- `FraisPremium` → gratuit
+
+### Observer
+- `Compte` notifie automatiquement tous ses observers à chaque opération
+- `NotificationEmail` et `NotificationSMS` implémentent `Observer`
+- Ajout/suppression d'observers sans modifier `Compte`
 
 ## 🏗️ Modèle de données
 ```
@@ -64,6 +92,15 @@ Compte (1) ──contient──> (N) Transaction
                               ├── montant
                               ├── type (TypeTransaction)
                               └── date (LocalDateTime)
+
+Compte ──notifie──> (N) Observers
+                              ├── NotificationEmail
+                              └── NotificationSMS
+
+Compte ──utilise──> IStrategieFrais
+                              ├── FraisStandard
+                              ├── FraisEtudiant
+                              └── FraisPremium
 ```
 
 ## 🚀 Lancer le projet
@@ -79,7 +116,8 @@ java -cp bin App
 
 ## 📈 Prochaines étapes
 
-- [ ] Design Patterns (Factory, Strategy, Observer)
+- [x] POO Pure (Encapsulation, Héritage, Polymorphisme)
+- [x] Design Patterns (Factory, Strategy, Observer)
 - [ ] Gestion des exceptions
 - [ ] Organisation en packages
 - [ ] Spring Boot
@@ -92,8 +130,8 @@ de développement principalement orientée React/Next.js.
 
 ---
 
-**Copiez ça dans votre README.md, sauvegardez, puis faites :**
+**Copiez ça dans votre README.md puis :**
 ```
 git add README.md
-git commit -m "docs: amélioration du README"
+git commit -m "docs: mise à jour README avec Design Patterns"
 git push
