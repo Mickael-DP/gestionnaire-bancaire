@@ -129,9 +129,3 @@ de développement principalement orientée React/Next.js.
 ```
 
 ---
-
-**Copiez ça dans votre README.md puis :**
-```
-git add README.md
-git commit -m "docs: mise à jour README avec Design Patterns"
-git push
