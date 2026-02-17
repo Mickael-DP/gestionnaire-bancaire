@@ -46,28 +46,31 @@ public abstract class Compte {
         }
     }
 
-    public boolean deposer(double montant) {
-        if (montant > 0) {
+    public void deposer(double montant) throws MontantInvalideException {
+  if (montant <= 0) {
+            throw new MontantInvalideException("Le montant doit être positif= " + montant);
+        }
             solde += montant;
             historiques.add(new Transaction(montant, TypeTransaction.DEPOT));
-            notifyObservers("Dépôt de " + montant + " sur le compte " + numeroCompte);
-         return true;
-        } 
-        return false;
+            notifyObservers("Dépôt de " + montant + "€ effectué. Solde : " + solde + "€");
+
     }
 
-   public boolean retirer(double montant) {
-    double frais = strategieFrais.calculerFrais(montant);
-    double montantTotal = montant + frais;
-    
-    if (montant > 0 && solde >= montantTotal) {
-        solde -= montantTotal;
+    public void retirer(double montant) throws MontantInvalideException, SoldeInsuffisantException {
+        if (montant <= 0) {
+            throw new MontantInvalideException("Le montant doit être positif= " + montant);
+        }
+        double frais = strategieFrais.calculerFrais(montant);
+        double totalRetrait = montant + frais;
+        
+        if (totalRetrait > solde) {
+            throw new SoldeInsuffisantException("Solde insuffisant pour ce retrait. Solde actuel : " + solde + "€, montant demandé : " + montant + "€, frais : " + frais + "€");
+        }
+        
+        solde -= totalRetrait;
         historiques.add(new Transaction(montant, TypeTransaction.RETRAIT));
-        notifyObservers("Retrait de " + montant + "€ effectué. Frais : " + frais + "€. Solde : " + solde + "€");
-        return true;
+        notifyObservers("Retrait de " + montant + "€ effectué avec des frais de " + frais + "€. Solde : " + solde + "€");
     }
-    return false;
-}
 
 
 }

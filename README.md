@@ -20,25 +20,27 @@ Ainsi que les Design Patterns essentiels :
 src/
 ├── App.java
 ├── model/
-│   ├── Compte.java              # Classe abstraite - modèle de base
-│   ├── CompteCourant.java       # Hérite de Compte (avec découvert autorisé)
-│   ├── CompteEpargne.java       # Hérite de Compte (avec taux d'intérêt)
-│   ├── Client.java              # Gestion des clients
-│   └── Transaction.java         # Historique des opérations
+│   ├── Compte.java                    # Classe abstraite - modèle de base
+│   ├── CompteCourant.java             # Hérite de Compte (avec découvert autorisé)
+│   ├── CompteEpargne.java             # Hérite de Compte (avec taux d'intérêt)
+│   ├── Client.java                    # Gestion des clients
+│   ├── Transaction.java               # Historique des opérations
+│   ├── MontantInvalideException.java  # Exception - montant invalide
+│   └── SoldeInsuffisantException.java # Exception - solde insuffisant
 ├── factory/
-│   └── CompteFactory.java       # Pattern Factory - création des comptes
+│   └── CompteFactory.java             # Pattern Factory - création des comptes
 ├── strategy/
-│   ├── IStrategieFrais.java     # Interface - pattern Strategy
-│   ├── FraisStandard.java       # Frais standard (2€)
-│   ├── FraisEtudiant.java       # Frais étudiant (0.50€)
-│   └── FraisPremium.java        # Frais premium (gratuit)
+│   ├── IStrategieFrais.java           # Interface - pattern Strategy
+│   ├── FraisStandard.java             # Frais standard (2€)
+│   ├── FraisEtudiant.java             # Frais étudiant (0.50€)
+│   └── FraisPremium.java              # Frais premium (gratuit)
 ├── observer/
-│   ├── Observer.java            # Interface - pattern Observer
-│   ├── NotificationEmail.java   # Observer - notification email
-│   └── NotificationSMS.java     # Observer - notification SMS
+│   ├── Observer.java                  # Interface - pattern Observer
+│   ├── NotificationEmail.java         # Observer - notification email
+│   └── NotificationSMS.java           # Observer - notification SMS
 └── enums/
-    ├── TypeCompte.java          # Enum - types de comptes
-    └── TypeTransaction.java     # Enum - types de transactions
+    ├── TypeCompte.java                # Enum - types de comptes
+    └── TypeTransaction.java           # Enum - types de transactions
 ```
 
 ## 🎓 Concepts POO utilisés
@@ -54,6 +56,7 @@ src/
 - `CompteCourant` et `CompteEpargne` héritent de `Compte`
 - Chaque classe enfant a ses propres attributs spécifiques
 - Utilisation de `super` pour appeler le constructeur parent
+- Les exceptions héritent de `Exception`
 
 ### Polymorphisme
 - Une `List<Compte>` peut contenir des `CompteCourant` ET des `CompteEpargne`
@@ -86,6 +89,25 @@ src/
 - `Compte` notifie automatiquement tous ses observers à chaque opération
 - `NotificationEmail` et `NotificationSMS` implémentent `Observer`
 - Ajout/suppression d'observers sans modifier `Compte`
+
+## ⚠️ Gestion des Exceptions
+```java
+// Lancer une exception
+throw new SoldeInsuffisantException("Solde insuffisant...");
+throw new MontantInvalideException("Montant invalide...");
+
+// Attraper une exception
+try {
+    compte.retirer(200);
+} catch (MontantInvalideException e) {
+    System.out.println(e.getMessage());
+} catch (SoldeInsuffisantException e) {
+    System.out.println(e.getMessage());
+}
+```
+
+- `MontantInvalideException` → lancée si le montant est négatif ou nul
+- `SoldeInsuffisantException` → lancée si le solde est insuffisant
 
 ## 🏗️ Modèle de données
 ```
@@ -124,7 +146,7 @@ java -cp bin App
 - [x] POO Pure (Encapsulation, Héritage, Polymorphisme)
 - [x] Design Patterns (Factory, Strategy, Observer)
 - [x] Organisation en packages
-- [ ] Gestion des exceptions
+- [x] Gestion des exceptions
 - [ ] Spring Boot
 
 ## 👨‍💻 Contexte

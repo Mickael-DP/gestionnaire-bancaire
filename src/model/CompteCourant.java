@@ -15,12 +15,15 @@ public class CompteCourant extends Compte {
     }
 
     @Override
-    public boolean retirer(double montant) {
-        if (montant > 0 && getSolde() + decouvertAutorise >= montant) {
-           return super.retirer(montant);
-        }
-        return false;
-
+public void retirer(double montant) throws MontantInvalideException, SoldeInsuffisantException {
+    if (montant <= 0) {
+        throw new MontantInvalideException("Le montant doit être positif : " + montant);
     }
+    if (getSolde() + decouvertAutorise < montant) {
+        throw new SoldeInsuffisantException("Solde insuffisant même avec le découvert autorisé de " + decouvertAutorise + "€");
+    }
+    super.retirer(montant);
+}
+    
 
 }
